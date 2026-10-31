@@ -3,7 +3,7 @@ description: >-
   OpenTelemetry instrumentation for mlkit_face_detection by Dartastic.io. Adds
   standard OpenTelemetry observability to applications that use
   mlkit_face_detection.
-version: 0.1.0-wip
+version: 0.1.0
 repository: https://github.com/dartastic/otel_mlkit_face_detection
 homepage: https://dartastic.io
 
