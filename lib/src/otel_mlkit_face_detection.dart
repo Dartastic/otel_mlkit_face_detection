@@ -1,15 +1,16 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the Apache License, Version 2.0
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_mlkit_face_detection_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_mlkit_face_detection';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class MlkitFaceDetectionResult {
+  /// Creates a result.
   const MlkitFaceDetectionResult({
     this.performanceMode,
     this.landmarkMode,
@@ -64,8 +65,13 @@ class MlkitFaceDetectionResult {
   final int? processingMs;
 }
 
+/// What a traced call returned: the value for the caller plus fields
+/// recorded on the span.
 class MlkitFaceDetectionCallResult<T> {
+  /// Creates a call result.
   const MlkitFaceDetectionCallResult({required this.value, this.result});
+
+  /// The value returned to the caller.
   final T value;
   final MlkitFaceDetectionResult? result;
 }
@@ -89,7 +95,7 @@ Future<T> tracedMlkitFaceDetection<T>({
   final span = _tracer().startSpan(
     'mlkit_face_detection $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
@@ -97,114 +103,114 @@ Future<T> tracedMlkitFaceDetection<T>({
       final res = r.result!;
       final extras = <Attribute<Object>>[];
       if (res.performanceMode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'mlkit_face_detection.performance_mode',
           res.performanceMode!,
         ));
       }
       if (res.landmarkMode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'mlkit_face_detection.landmark_mode',
           res.landmarkMode!,
         ));
       }
       if (res.contourMode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'mlkit_face_detection.contour_mode',
           res.contourMode!,
         ));
       }
       if (res.classificationMode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'mlkit_face_detection.classification_mode',
           res.classificationMode!,
         ));
       }
       if (res.minFaceSize != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.min_face_size',
           res.minFaceSize!,
         ));
       }
       if (res.enableTracking != null) {
-        extras.add(OTel.attributeBool(
+        extras.add(OTelAPI.attributeBool(
           'mlkit_face_detection.tracking.enabled',
           res.enableTracking!,
         ));
       }
       if (res.faceCount != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'mlkit_face_detection.face.count',
           res.faceCount!,
         ));
       }
       if (res.primaryTrackingId != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'mlkit_face_detection.primary.tracking_id',
           res.primaryTrackingId!,
         ));
       }
       if (res.primaryLeftEyeOpenProb != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.primary.left_eye_open_prob',
           res.primaryLeftEyeOpenProb!,
         ));
       }
       if (res.primaryRightEyeOpenProb != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.primary.right_eye_open_prob',
           res.primaryRightEyeOpenProb!,
         ));
       }
       if (res.primarySmilingProb != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.primary.smiling_prob',
           res.primarySmilingProb!,
         ));
       }
       if (res.primaryRotationY != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.primary.rotation_y',
           res.primaryRotationY!,
         ));
       }
       if (res.primaryRotationZ != null) {
-        extras.add(OTel.attributeDouble(
+        extras.add(OTelAPI.attributeDouble(
           'mlkit_face_detection.primary.rotation_z',
           res.primaryRotationZ!,
         ));
       }
       if (res.inputImageWidth != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'mlkit_face_detection.input.width',
           res.inputImageWidth!,
         ));
       }
       if (res.inputImageHeight != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'mlkit_face_detection.input.height',
           res.inputImageHeight!,
         ));
       }
       if (res.inputImageSource != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'mlkit_face_detection.input.source',
           res.inputImageSource!,
         ));
       }
       if (res.processingMs != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'mlkit_face_detection.processing_ms',
           res.processingMs!,
         ));
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
